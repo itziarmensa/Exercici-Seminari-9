@@ -81,7 +81,7 @@ function Tab2Screen() {
     <View style={styles.tabContainer}>
       <Text style={styles.tabTitle}>Photo page</Text>
       <Image 
-        style={{ width: 350, height: 255}}
+        style={{ width: 350, height: 255, borderRadius: 10}}
         source={{uri: 'https://www.meme-arsenal.com/memes/73770917d803b560114e0cf5e9d8a870.jpg'}}
       />     
       </View>
