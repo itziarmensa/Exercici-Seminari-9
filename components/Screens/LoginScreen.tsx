@@ -10,6 +10,8 @@ import Register from '../Texts/Register';
 import { useNavigation } from '@react-navigation/native';
 import Svg, {SvgProps, Path, G, Defs, Pattern, Use, Image,} from "react-native-svg"
 import StyledTextInputs from '../Inputs/StyledTextInputs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 function LoginScreen() {
   
@@ -90,7 +92,17 @@ function LoginScreen() {
                 25,
                 50,
               );
-            navigation.navigate('Home' as never);
+
+              const guardarValor = async () => {
+                try {
+                  await AsyncStorage.setItem('user', JSON.stringify(data));
+                  console.log('Variable guardada exitosamente.');
+                } catch (error) {
+                  console.log('Error al guardar la variable:', error);
+                }
+              }
+              guardarValor();         
+              navigation.navigate('Home' as never);          
             };
           })
           .catch ((error) => {
@@ -109,6 +121,8 @@ function LoginScreen() {
       </TouchableOpacity>
       <StatusBar style="auto" /> 
     </MainContainer>
+
+    
   )
 }
 

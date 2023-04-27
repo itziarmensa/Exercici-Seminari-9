@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Animated, Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -6,10 +6,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { Fontisto } from '@expo/vector-icons'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 
-function HomeScreen() {
+function HomeScreen() {  
   return (
       <Tab.Navigator>
         <Tab.Screen 
@@ -89,9 +91,36 @@ function Tab2Screen() {
 }
 
 function Tab3Screen() {
+  const [username, setUsername] = useState('');
+  const [usersurname, setUsersurname] = useState('');
+  const [usermail, setUsermail] = useState('');
+  
+
+  const recibirValor = async () => {
+    try {
+      const userRecived = await AsyncStorage.getItem('user');
+      if(userRecived !== null) {
+        const user = JSON.parse(userRecived);
+        setUsername(user.name);
+        setUsersurname(user.surname);
+        setUsermail(user.email);
+      } else {
+        console.log('No se encontró ningún valor para la variable.');
+      }
+    } catch (error) {
+      console.log('Error al recibir la variable:', error);
+    }
+  }
+
+  useEffect(() => {
+    recibirValor();
+  }, []);
+
   return (
     <View style={styles.tabContainer}>
-      <Text style={styles.tabTitle}>Contenido de la Tab 3</Text>
+      <Text style={styles.tabTitle}>Name: {username}</Text>
+      <Text style={styles.tabTitle}>Surname: {usersurname}</Text>
+      <Text style={styles.tabTitle}>Mail: {usermail}</Text>
     </View>
   );
 }
